@@ -81,7 +81,7 @@ $row_usuario = mysqli_fetch_assoc($resultado_usuario);
                 dados = JSON.parse(dados);
                 console.log(dados);
                 if (dados.status == "sucesso") {
-                    alertaMensagem('usuario editado com sucesso')
+                    alertaMensagem('Senha editado com sucesso')
                 } else {
                     alertaMensagem('Senha atual errada', false)
                 }

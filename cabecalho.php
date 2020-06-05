@@ -64,7 +64,7 @@ require_once 'conexoes/login.php';
                         }
                         ?>
                     </li>
-                </ul>
+                </ul><br>
                 <div align="right" style="color: white">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item" style="color: white">

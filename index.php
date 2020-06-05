@@ -8,8 +8,6 @@ if (!is_logado()) {
     header("location: user-login.php");
     die;
 }
-
-
 ?>
 <body id="body"> 
     <div class="table responsive">
@@ -60,7 +58,7 @@ if (!is_logado()) {
                                 </div>
                                 <div class="form-group">
                                     <label for="observacao">Observação</label>
-                                    <input type="text" name="observacao" id="observacao" class="form-control" required>
+                                    <textarea type="text" name="observacao" id="observacao" class="form-control" required></textarea>
                                 </div>
                             </div>
                         </div>
@@ -119,9 +117,7 @@ if (!is_logado()) {
             url: "ajax/novaSolicitacao.php",
             method: "POST",
             data: {
-                // solicitacao: $("#solicitacao").val(),
                 observacao: $("#observacao").val(),
-                cadastro: 'cadastro'
             },
             success: function(dados) {
                 dados = JSON.parse(dados)
@@ -410,7 +406,7 @@ if (!is_logado()) {
                                 </div>
                                 <div class="form-group">
                                     <label for="observacao">Observação</label>
-                                    <input type="text" name="observacao" id="observacao" class="form-control" required>
+                                    <textarea type="text" name="observacao" id="observacao" class="form-control" required></textarea>
                                 </div>
                                 </div>
                             </div>

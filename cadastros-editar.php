@@ -25,7 +25,7 @@ function editarCadastro($post, $conexao)
     $telefone = $post['telefone'] ?? null;
     $email = $post['email'] ?? null;
     $sexo = $post['sexo'] ?? null;
-    $tipo = $post['tipo'] ?? null;
+    $tipo = $post['tipo'] ?? null; 
     $situacao = $post['situacao'] ?? null;
 
     $q = "UPDATE `cadastro` 
