@@ -5,12 +5,13 @@ require_once '../conexoes/conexao.php';
 require_once '../conexoes/funcoes.php';
 
 $id_usuario = $_SESSION['id_usuario_igreja'];
+$descricao = $_POST['descricao'];
 $observacao = $_POST['observacao'];
 
 $q = "INSERT 
     INTO `igreja_sib`.`solicitacoes` 
         (`id_usuario`, `id_tipo_solicitacao`, `observacao`) 
-    VALUES ('$id_usuario', '1', '$observacao');
+    VALUES ('$id_usuario', '$descricao', '$observacao');
 ";
 
 

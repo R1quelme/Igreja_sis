@@ -1,3 +1,8 @@
+<!-- O que falta:
+*O botão editar das solicitações nao está 100%(ele nao poem o tipo de solicitação e na parte do usuário nem abre)
+*Fazer com que em tipo de solicitações quando eu por em inátivo a opção suma
+*Não deixar que um usuário com o usuário igual ao outro sejam cadastrados -->
+
 <?php
 require_once 'cabecalho.php';
 require_once 'conexoes/conexao.php';
@@ -5,9 +10,16 @@ require_once 'conexoes/login.php';
 require_once 'conexoes/funcoes.php';
 
 if (!is_logado()) {
-    header("location: user-login.php");
+    header("location: user-login.php"); 
     die;
 }
+
+$queryOptionsSolicitacao = mysqli_query($conexao, "
+SELECT 
+    id_tipo_solicitacao, descricao, situacao
+FROM
+    tipo_solicitacao;
+");
 ?>
 <body id="body"> 
     <div class="table responsive">
@@ -23,11 +35,11 @@ if (!is_logado()) {
             <thead>
                 <tr>
                     <th scope="col" data-field="id" data-visible="false"></th>
-                    <th scope="col" data-field="nome" data-sortable="true">Nome</th>
+                    <th scope="col" data-field="nome">Nome</th>
                     <th scope="col" data-field="endereco">Endereço </th>
                     <th scope="col" data-field="solicitacao">Tipo de solicitação</th>
                     <th scope="col" data-field="observacao">Observação</th>
-                    <th scope="col" data-field="criado">Criado</th>
+                    <th scope="col" data-field="criado" data-sortable="true">Criado</th>
                     <th scope="col" data-field="situacao">Situação</th>
                     <th scope="col" id="cadastros-editar" data-field="acoes">Ações</th>
                 </tr>
@@ -50,10 +62,12 @@ if (!is_logado()) {
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label for="solicitacao">Tipo de solicitação</label>
-                                    <select name="solicitacao" id="solicitacao" class="form-control" required>
-                                        <option value="">Cesta Básica</option>
-                                        <option value="2">Outros</option>
+                                    <label for="descricao">Tipo de solicitação</label>
+                                    <select name="descricao" id="descricao" class="form-control" required>
+                                        <?php
+                                        while($prod = mysqli_fetch_array($queryOptionsSolicitacao)) { ?>
+                                        <option value="<?php echo $prod['id_tipo_solicitacao'] ?>"><?php echo $prod['descricao'] ?></option>
+                                        <?php } ?>
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -117,6 +131,7 @@ if (!is_logado()) {
             url: "ajax/novaSolicitacao.php",
             method: "POST",
             data: {
+                descricao: $("#descricao").val(),
                 observacao: $("#observacao").val(),
             },
             success: function(dados) {
@@ -331,28 +346,22 @@ if (!is_logado()) {
 
 
     ///editar/////
-    function editarRegistro(id_usuario) {
+    function editarRegistro(id_solicitacoes) {
         $.ajax({
             url: `solicitacao_editar.php`,
             method: "POST",
             data: {
-                id_usuario: id_usuario,
-                cpf: $("#cpf_edit").val(),
-                nome: $("#nome_edit").val(),
-                endereco: $("#endereco_edit").val(),
-                telefone: $("#telefone_edit").val(),
-                email: $("#email_edit").val(),
-                sexo: $("#sexo_edit").val(),
-                tipo: $("#tipo_edit").val(),
-                situacao: $("#situacao_edit").val(),
+                id_solicitacoes: id_solicitacoes,
+                descricao: $("#descricao_edit").val(),
+                observacao: $("#observacao_edit").val(),
             },
             success: function(dados) {
                 dados = JSON.parse(dados);
                 console.log(dados);
                 if (dados.status == "sucesso") {
                     enviarajax()
-                    $('#cadastros-editar').modal('hide')
-                    alertaMensagem('Cadastro editado com sucesso')
+                    $('#solicitacoes-edit').modal('hide')
+                    alertaMensagem('Solicitação editada com sucesso')
                 } else {
                     alertaMensagem('Erro ao editar, favor contatar o suporte', false)
                 }
@@ -363,18 +372,28 @@ if (!is_logado()) {
         })
     }
 
-    function modalEditar(id_usuario) {
+    <?php
+    $queryOptionsEditar = mysqli_query($conexao, "
+        SELECT 
+            id_tipo_solicitacao, descricao
+        FROM
+            tipo_solicitacao;
+        ");
+    ?>
+
+    function modalEditar(id_solicitacoes) {
 
 
-    function buscaEditar(id_usuario) {
+    function buscaEditar(id_solicitacoes) {
         $.ajax({
-            url: `busca_cadastro.php?id_usuario=${id_usuario}`,
+            url: `busca_solicitacao.php?id_solicitacoes=${id_solicitacoes}`,
             method: "GET",
             success: function(dados) {
                 dados = JSON.parse(dados);
 
-                $("#situacao_edit").val(dados[0]["situacao"])
-                $('#cadastros-editar').modal('show')
+                $("#descricao_edit").val(dados[0]["solicitacao"])
+                $("#observacao_edit").val(dados[0]["observacao"])
+                $('#solicitacoes-edit').modal('show')
             }
         })
     }
@@ -384,7 +403,7 @@ if (!is_logado()) {
     function criarModalEditar() {
 
         $('#body').append(`
-    <div class="modal fade" id="cadastros-editar" tabindex="-1" role="dialog" aria-labelledby="editarModalLabel" aria-hidden="true">
+    <div class="modal fade" id="solicitacoes-edit" tabindex="-1" role="dialog" aria-labelledby="editarModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -397,23 +416,25 @@ if (!is_logado()) {
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col-12">
-                                <div class="form-group">
-                                    <label for="solicitacao">Tipo de solicitação</label>
-                                    <select name="solicitacao" id="solicitacao" class="form-control" required>
-                                        <option value="">Cesta Básica</option>
-                                        <option value="2">Outros</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="observacao">Observação</label>
-                                    <textarea type="text" name="observacao" id="observacao" class="form-control" required></textarea>
-                                </div>
+                                        <div class="form-group">
+                                            <label for="descricao_edit">Tipo de solicitação</label>
+                                            <select name="descricao_edit" id="descricao_edit" class="form-control" required>
+                                                <?php
+                                                 while($prod = mysqli_fetch_array($queryOptionsEditar)) { ?>
+                                                <option value="<?php echo $prod['id_tipo_solicitacao'] ?>"><?php echo $prod['descricao'] ?></option>
+                                                <?php } ?>
+                                            </select>
+                                        </div>
+                                    <div class="form-group">
+                                        <label for="observacao_edit">Observação</label>
+                                        <textarea type="text" name="observacao_edit" id="observacao_edit" class="form-control" required></textarea>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                            <button type="button" class="btn btn-success" value="Editar" onclick='editarRegistro(${id_usuario})'>Salvar</button>
+                            <button type="button" class="btn btn-success" value="Editar" onclick='editarRegistro(${id_solicitacoes})'>Salvar</button>
                         </div>
                     </form>
                 </div>
@@ -421,14 +442,14 @@ if (!is_logado()) {
         </div>
     `)
 
-        $('#cadastros-editar').on('hidden.bs.modal', function(e) {
-            $("#cadastros-editar").remove();
+        $('#solicitacoes-editar').on('hidden.bs.modal', function(e) {
+            $("#solicitacoes-editar").remove();
         })
 
     }
     criarModalEditar()
 
-    buscaEditar(id_usuario);
+    buscaEditar(id_solicitacoes);
     }
 
 </script>

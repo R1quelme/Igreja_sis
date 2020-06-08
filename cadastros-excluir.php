@@ -9,7 +9,7 @@ $idcadastros = filter_input(INPUT_GET, 'id_usuario', FILTER_SANITIZE_SPECIAL_CHA
 $query = "UPDATE `cadastro` SET `situacao` = 'inativo' WHERE `id_usuario` = $idcadastros";
 
 $exec = mysqli_query($conexao, $query);
-
+ 
 if($exec == false ){
     echo json_encode(Array("status"=>'erro'));
 } else{

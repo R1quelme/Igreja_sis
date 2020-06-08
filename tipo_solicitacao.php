@@ -24,7 +24,7 @@ if(!is_admin()){
                         <th scope="col" data-field="descricao">Tipo de solicitação</th>
                         <th scope="col" data-field="situacao">Situação</th>
                         <th scope="col" id="tipo_solicitacao_editar" data-field="editar">Editar</th>
-                        <th scope="col" id="tipo_solicitacao_excluir" data-field="excluir">Excluir</th>
+                        <th scope="col" id="tipo_solicitacao_inativar" data-field="inativar">Inativar</th>
                     </tr>
                 </thead>
             </table>
@@ -127,7 +127,7 @@ if(!is_admin()){
         })
     }
 
-    function excluir(id_tipo_solicitacao) {
+    function inativar(id_tipo_solicitacao) {
         $.ajax({
             url: `tipo_solicitacao-excluir.php?id_tipo_solicitacao=${id_tipo_solicitacao}`,
             method: "GET",
@@ -136,14 +136,14 @@ if(!is_admin()){
                 if (dados.status == "sucesso") {
                     enviarajax()
                     $('#cadastros-excluir').modal('hide')
-                    alertaMensagem('Cadastro excluido com sucesso')
+                    alertaMensagem('Cadastro inativado com sucesso')
                 } else {
                     $('#cadastros-excluir').modal('hide')
-                    alertaMensagem('Erro ao excluir, favor contatar o suporte', false)
+                    alertaMensagem('Erro ao inativar, favor contatar o suporte', false)
                 }
             },
             error: function() {
-                alertaMensagem('Erro ao excluir, favor contatar o suporte', false)
+                alertaMensagem('Erro ao inativar, favor contatar o suporte', false)
             }
         })
     }
@@ -157,15 +157,15 @@ if(!is_admin()){
                 <div class="modal-content">
                     <form>
                         <div class="modal-header">
-                            <h4 class="modal-title">Deletar cadastro</h4>
+                            <h4 class="modal-title">Inativar cadastro</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         </div>
                         <div class="modal-body">
-                            <p>Voce tem certeza que deseja excluir esse tipo de solicitacao?</p>
+                            <p>Voce tem certeza que deseja inativar esse tipo de solicitacao?</p>
                         </div>
                         <div class="modal-footer">
                             <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-                            <input type="button" class="btn btn-danger" value="Excluir" onclick='excluir(${id_tipo_solicitacao})'>
+                            <input type="button" class="btn btn-danger" value="Inativar" onclick='inativar(${id_tipo_solicitacao})'>
                         </div>
                     </form>
                 </div>

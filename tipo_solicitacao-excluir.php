@@ -2,7 +2,7 @@
 require_once 'conexoes/conexao.php';
 
 $idcadastros = filter_input(INPUT_GET, 'id_tipo_solicitacao');
-$query = "DELETE FROM `tipo_solicitacao` WHERE `id_tipo_solicitacao` = $idcadastros";
+$query = "UPDATE `tipo_solicitacao` SET `situacao` = 'I' WHERE `id_tipo_solicitacao` = $idcadastros";
 
 $exec = mysqli_query($conexao, $query);
 

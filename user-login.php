@@ -62,7 +62,7 @@ function formulario($msg, $usuario = "")
                             formulario(msg_erro('Senha Inválida'), $usuario);
                         }
                     } else {
-                        formulario(msg_erro('Usuário inátivo'));
+                        formulario(msg_erro('Usuário inativo'));
                     }
                 } else {
                     formulario(msg_erro('Usuário inválido'));
