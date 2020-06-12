@@ -231,15 +231,15 @@ if (!is_admin()) {
                                         <div class="form-group">
                                             <label for="tipo_edit">Tipo</label>
                                             <select name="tipo_edit" id="tipo_edit" class="form-control">
-                                                <option value="usuario">usuario</option>
-                                                <option value="admin">admin</option>
+                                                <option value="usuario">Usuario</option>
+                                                <option value="admin">Administrador</option>
                                             </select>
                                         </div>
                                         <div class="form-group">
                                             <label for="situacao_edit">Situacao</label>
                                             <select name="situacao_edit" id="situacao_edit" class="form-control">
-                                                <option value="ativo">ativo</option>
-                                                <option value="inativo">inativo</option>
+                                                <option value="ativo">Ativo</option>
+                                                <option value="inativo">Inativo</option>
                                             </select>
                                         </div>
                                     </div>

@@ -8,7 +8,7 @@ $q = "SELECT
 $id = '';
 if(array_key_exists("id_tipo_solicitacao", $_GET)){
     $id = $_GET['id_tipo_solicitacao'];
-    $q .= " WHERE (id_tipo_solicitacao=$id)"; 
+    $q .= " WHERE (id_tipo_solicitacao=$id)";  
 }
 $resultados = $conexao->query($q);
 

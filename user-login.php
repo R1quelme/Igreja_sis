@@ -35,41 +35,46 @@ function formulario($msg, $usuario = "")
 }
 ?>
 
-<body>
-    <div id="corpo">
-        <?php
-        $usuario = ($_POST['usuario']) ?? null;
-        $senha = $_POST['senha'] ?? null;
+<body><br>
+    <!-- <div class="text-center">
+        <img src="logo_batista.jpg" width="80px"><br>
+    </div> -->
+    <div class="col-md-11 offset-md-4">
+        <div id="corpo" class="container">
+            <?php
+            $usuario = ($_POST['usuario']) ?? null;
+            $senha = $_POST['senha'] ?? null;
 
-        if (is_null($usuario) || is_null($senha)) {
-            formulario('');
-        } else {
-            $q = "SELECT id_usuario, usuario, nome, senha, tipo, situacao FROM cadastro WHERE usuario = '$usuario' LIMIT 1";
-            $busca = $conexao->query($q);
-            if (!$busca) {
-                echo "Falha ao acessar o banco";
+            if (is_null($usuario) || is_null($senha)) {
+                formulario('');
             } else {
-                if ($busca->num_rows > 0) {
-                    $registro = $busca->fetch_object();
-                    if ($registro->situacao === "ativo") {
-                        if (testarHash($senha, $registro->senha)) {
-                            header("location: index.php");
-                            $_SESSION['user_igreja'] = $registro->usuario;
-                            $_SESSION['nome_igreja'] = $registro->nome;
-                            $_SESSION['tipo_igreja'] = $registro->tipo;
-                            $_SESSION['id_usuario_igreja'] = $registro->id_usuario;
+                $q = "SELECT id_usuario, usuario, nome, senha, tipo, situacao FROM cadastro WHERE usuario = '$usuario' LIMIT 1";
+                $busca = $conexao->query($q);
+                if (!$busca) {
+                    echo "Falha ao acessar o banco";
+                } else {
+                    if ($busca->num_rows > 0) {
+                        $registro = $busca->fetch_object();
+                        if ($registro->situacao === "ativo") {
+                            if (testarHash($senha, $registro->senha)) {
+                                header("location: index.php");
+                                $_SESSION['user_igreja'] = $registro->usuario;
+                                $_SESSION['nome_igreja'] = $registro->nome;
+                                $_SESSION['tipo_igreja'] = $registro->tipo;
+                                $_SESSION['id_usuario_igreja'] = $registro->id_usuario;
+                            } else {
+                                formulario(msg_erro('Senha Inválida'), $usuario);
+                            }
                         } else {
-                            formulario(msg_erro('Senha Inválida'), $usuario);
+                            formulario(msg_erro('Usuário inativo'));
                         }
                     } else {
-                        formulario(msg_erro('Usuário inativo'));
+                        formulario(msg_erro('Usuário inválido'));
                     }
-                } else {
-                    formulario(msg_erro('Usuário inválido'));
                 }
             }
-        }
-        ?>
+            ?>
+        </div>
     </div>
 
     <script type="text/javascript">
@@ -182,14 +187,16 @@ function formulario($msg, $usuario = "")
                     sexo: $("#sexo").val(),
                     usuario: $("#usuario_log").val(),
                     senha: $("#senha_log").val(),
+
                 },
                 success: function(dados) {
                     dados = JSON.parse(dados)
                     if (dados.status == "sucesso") {
                         $('#criarCadastro').modal('hide')
                         alertaMensagem('Cadastro realizado com sucesso')
+                        $('.modal-backdrop').remove();
                     } else {
-                        alertaMensagem('Erro ao cadastrar, favor contatar o suporte', false)
+                        alertaMensagem('Erro ao cadastrar, usuário já existe', false)
                     }
                 },
                 error: function() {

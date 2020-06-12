@@ -1,8 +1,3 @@
-<!-- O que falta:
-*O botão editar das solicitações nao está 100%(ele nao poem o tipo de solicitação e na parte do usuário nem abre)
-*Fazer com que em tipo de solicitações quando eu por em inátivo a opção suma
-*Não deixar que um usuário com o usuário igual ao outro sejam cadastrados -->
-
 <?php
 require_once 'cabecalho.php';
 require_once 'conexoes/conexao.php';
@@ -36,16 +31,16 @@ FROM
                 <tr>
                     <th scope="col" data-field="id" data-visible="false"></th>
                     <th scope="col" data-field="nome">Nome</th>
-                    <th scope="col" data-field="endereco">Endereço </th>
+                    <th scope="col" data-field="endereco">Endereço </th>   
                     <th scope="col" data-field="solicitacao">Tipo de solicitação</th>
-                    <th scope="col" data-field="observacao">Observação</th>
+                    <th scope="col" data-field="observacao">Observação</th> 
                     <th scope="col" data-field="criado" data-sortable="true">Criado</th>
                     <th scope="col" data-field="situacao">Situação</th>
                     <th scope="col" id="cadastros-editar" data-field="acoes">Ações</th>
                 </tr>
             </thead>
-        </table>
-        </div>
+        </table>  
+        </div>       
     </div>
 
     <div class="modal fade" id="modalSolicitacao" tabindex="-1" role="dialog" aria-labelledby="editarModalLabel" aria-hidden="true">
@@ -65,10 +60,12 @@ FROM
                                     <label for="descricao">Tipo de solicitação</label>
                                     <select name="descricao" id="descricao" class="form-control" required>
                                         <?php
-                                        while($prod = mysqli_fetch_array($queryOptionsSolicitacao)) { ?>
-                                        <option value="<?php echo $prod['id_tipo_solicitacao'] ?>"><?php echo $prod['descricao'] ?></option>
+                                        while($prod = mysqli_fetch_array($queryOptionsSolicitacao)) { ?> 
+                                        <?php if($prod['situacao'] == 'A'){ ?>
+                                            <option value="<?php echo $prod['id_tipo_solicitacao']?>"><?php echo $prod['descricao']?></option>
+                                            <?php } ?>
                                         <?php } ?>
-                                    </select>
+                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="observacao">Observação</label>
@@ -105,6 +102,10 @@ FROM
     function enviarajax() {
         $.ajax({
             url: "busca_solicitacao.php",
+            method: "GET", //POST
+            data: {
+                busca: 'tudo'
+            },
             success: function(result) {
                 
                 $('#tabela_sib').bootstrapTable('destroy')
@@ -141,7 +142,7 @@ FROM
                     $('#modalSolicitacao').modal('hide')
                     alertaMensagem('Cadastro realizado com sucesso')
                 } else {
-                    alertaMensagem('Erro ao cadastrar, favor contatar o suporte', false)
+                    alertaMensagem('Erro ao cadastrar, ', false)
                 }
             },
             error: function() {
@@ -293,7 +294,7 @@ FROM
                 if (dados.status == "sucesso") {
                     enviarajax()
                     $('#solicitacao-indeferir').modal('hide')
-                    alertaMensagem('Solicitação indeferida com sucesso')
+                    alertaMensagem(`Solicitação de indeferida com sucesso`)
                 } else {
                     $('#solicitacao-indeferir').modal('hide')
                     alertaMensagem('Erro no comando, favor contatar o suporte', false)
@@ -375,7 +376,7 @@ FROM
     <?php
     $queryOptionsEditar = mysqli_query($conexao, "
         SELECT 
-            id_tipo_solicitacao, descricao
+            id_tipo_solicitacao, descricao, situacao
         FROM
             tipo_solicitacao;
         ");
@@ -386,12 +387,16 @@ FROM
 
     function buscaEditar(id_solicitacoes) {
         $.ajax({
-            url: `busca_solicitacao.php?id_solicitacoes=${id_solicitacoes}`,
+            url: `busca_solicitacao.php`,
             method: "GET",
+            data: {
+                id_solicitacoes: id_solicitacoes,
+                busca: 'unica'
+            },
             success: function(dados) {
                 dados = JSON.parse(dados);
 
-                $("#descricao_edit").val(dados[0]["solicitacao"])
+                $("#descricao_edit").val(dados[0]["id_tipo_solicitacao"])
                 $("#observacao_edit").val(dados[0]["observacao"])
                 $('#solicitacoes-edit').modal('show')
             }
@@ -420,8 +425,10 @@ FROM
                                             <label for="descricao_edit">Tipo de solicitação</label>
                                             <select name="descricao_edit" id="descricao_edit" class="form-control" required>
                                                 <?php
-                                                 while($prod = mysqli_fetch_array($queryOptionsEditar)) { ?>
-                                                <option value="<?php echo $prod['id_tipo_solicitacao'] ?>"><?php echo $prod['descricao'] ?></option>
+                                                while($prod = mysqli_fetch_array($queryOptionsEditar)) { ?> 
+                                                <?php if($prod['situacao'] == 'A'){ ?>
+                                                    <option value="<?php echo $prod['id_tipo_solicitacao']?>"><?php echo $prod['descricao']?></option>
+                                                    <?php } ?>
                                                 <?php } ?>
                                             </select>
                                         </div>

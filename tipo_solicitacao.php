@@ -29,7 +29,7 @@ if(!is_admin()){
                 </thead>
             </table>
         </div>
-    </div>
+    </div> 
 
     <div class="modal fade" id="modalSolicitacao" tabindex="-1" role="dialog" aria-labelledby="editarModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -125,7 +125,7 @@ if(!is_admin()){
                 alertaMensagem('Erro ao cadastrar, favor contatar o suporte', false)
             }
         })
-    }
+    } 
 
     function inativar(id_tipo_solicitacao) {
         $.ajax({

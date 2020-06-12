@@ -49,7 +49,7 @@ $row_usuario = mysqli_fetch_assoc($resultado_usuario);
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
-    <!-- PAra fazer a mascar esses dois links -->
+    <!-- mensagens de aviso, é esse link abaixo -->
     <script src="tata-master/dist/tata.js"></script>
 </body>
 
@@ -81,7 +81,7 @@ $row_usuario = mysqli_fetch_assoc($resultado_usuario);
                 dados = JSON.parse(dados);
                 console.log(dados);
                 if (dados.status == "sucesso") {
-                    alertaMensagem('Senha editado com sucesso')
+                    alertaMensagem('Senha editada com sucesso')
                 } else {
                     alertaMensagem('Senha atual errada', false)
                 }
