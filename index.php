@@ -5,7 +5,7 @@ require_once 'conexoes/login.php';
 require_once 'conexoes/funcoes.php';
 
 if (!is_logado()) {
-    header("location: user-login.php"); 
+    header("location: user-login.php");
     die;
 }
 
@@ -13,34 +13,36 @@ $queryOptionsSolicitacao = mysqli_query($conexao, "
 SELECT 
     id_tipo_solicitacao, descricao, situacao
 FROM
-    tipo_solicitacao;
+    tipo_solicitacao
+where situacao = 'A';
 ");
 ?>
-<body id="body"> 
+
+<body id="body">
     <div class="table responsive">
         <div class="container">
             <br>
             <h2>Solicitações</h2>
-        
-            <div class="float-left" style="margin-top: 10px;color: #fff !important;">
-            <p><a id="solicitacao" onclick="abrirModalSolicitacao()"  class="btn btn-info">Fazer solicitação</a></p>
-            </div> 
 
-        <table class="table" id="tabela_sib" data-search="true" data-pagination="true" data-page-list="[10, 25, 50, 100, all]">
-            <thead>
-                <tr>
-                    <th scope="col" data-field="id" data-visible="false"></th>
-                    <th scope="col" data-field="nome">Nome</th>
-                    <th scope="col" data-field="endereco">Endereço </th>   
-                    <th scope="col" data-field="solicitacao">Tipo de solicitação</th>
-                    <th scope="col" data-field="observacao">Observação</th> 
-                    <th scope="col" data-field="criado" data-sortable="true">Criado</th>
-                    <th scope="col" data-field="situacao">Situação</th>
-                    <th scope="col" id="cadastros-editar" data-field="acoes">Ações</th>
-                </tr>
-            </thead>
-        </table>  
-        </div>       
+            <div class="float-left" style="margin-top: 10px;color: #fff !important;">
+                <p><a id="solicitacao" onclick="abrirModalSolicitacao()" class="btn btn-info">Fazer solicitação</a></p>
+            </div>
+
+            <table id="tabela_sib" data-search="true" data-pagination="true" data-page-list="[10, 25, 50, 100, all]">
+                <thead>
+                    <tr>
+                        <th scope="col" data-field="id" data-visible="false"></th>
+                        <th scope="col" data-field="nome">Nome</th>
+                        <th scope="col" data-field="endereco">Endereço </th>
+                        <th scope="col" data-field="solicitacao">Tipo de solicitação</th>
+                        <th scope="col" data-field="observacao">Observação</th>
+                        <th scope="col" data-field="criado" data-sortable="true">Criado</th>
+                        <th scope="col" data-field="situacao">Situação</th>
+                        <th scope="col" id="cadastros-editar" data-field="acoes">Ações</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
     </div>
 
     <div class="modal fade" id="modalSolicitacao" tabindex="-1" role="dialog" aria-labelledby="editarModalLabel" aria-hidden="true">
@@ -60,12 +62,10 @@ FROM
                                     <label for="descricao">Tipo de solicitação</label>
                                     <select name="descricao" id="descricao" class="form-control" required>
                                         <?php
-                                        while($prod = mysqli_fetch_array($queryOptionsSolicitacao)) { ?> 
-                                        <?php if($prod['situacao'] == 'A'){ ?>
-                                            <option value="<?php echo $prod['id_tipo_solicitacao']?>"><?php echo $prod['descricao']?></option>
-                                            <?php } ?>
+                                        while ($prod = mysqli_fetch_array($queryOptionsSolicitacao)) { ?>
+                                            <option value="<?php echo $prod['id_tipo_solicitacao'] ?>"><?php echo $prod['descricao'] ?></option>
                                         <?php } ?>
-                                     </select>
+                                    </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="observacao">Observação</label>
@@ -88,9 +88,65 @@ FROM
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
     <script src="tata-master/dist/tata.js"></script>
+    <div class="container">
+        <br>
+        <hr>
+        <footer class="container">
+            <p>Matheus Riquelme &copy; 2020 Sistema Segunda Igreja Batista</p>
+        </footer>
+    </div>
 </body>
 
 <script>
+    $(function() {
+        var iframe = $('.main-content iframe')[0],
+            menu_links = $('.items li a'),
+            selected_link,
+            href;
+
+
+        $(window).on('hashchange', function() {
+
+            if (window.location.hash) {
+                href = window.location.hash.substring(1);
+                selected_link = $('a[href$="' + href + '"]');
+
+                // Verifica se o hash é válido - deve existir como um dos itens do menu.
+                if (selected_link.length) {
+                    iframe.contentWindow.location.replace(href + '.html');
+
+                    menu_links.removeClass('active');
+                    selected_link.addClass('active');
+                }
+            } else {
+                iframe.contentWindow.location.replace('Footer-with-logo.html');
+                menu_links.removeClass('active');
+                $(menu_links[0]).addClass('active');
+            }
+
+        });
+
+
+        if (window.location.hash) {
+            $(window).trigger('hashchange');
+        }
+
+
+        menu_links.on('click', function(e) {
+            e.preventDefault();
+
+            window.location.hash = $(this).attr('href');
+        });
+
+
+        $('#template-select').on('change', function(e) {
+            e.preventDefault();
+
+            window.location.hash = $(this).find(':selected').data('href');
+        });
+
+    });
+
     function alertaMensagem(texto, sucesso = true) {
         if (sucesso) {
             tata.success(texto, '')
@@ -107,7 +163,7 @@ FROM
                 busca: 'tudo'
             },
             success: function(result) {
-                
+
                 $('#tabela_sib').bootstrapTable('destroy')
                 $('#tabela_sib').bootstrapTable({
                     data: JSON.parse(result)
@@ -123,10 +179,10 @@ FROM
 
     ///modal e onde manda a requisição do salvar///
     function abrirModalSolicitacao() {
-            $('#modalSolicitacao').modal('show')
-        };
-    
-        function salvarCadastro(event) {
+        $('#modalSolicitacao').modal('show')
+    };
+
+    function salvarCadastro(event) {
         event.preventDefault()
         $.ajax({
             url: "ajax/novaSolicitacao.php",
@@ -181,8 +237,8 @@ FROM
     ////Modal cancelar/////
     function modalCancelar(id_solicitacoes) {
 
-    function criarMODALCancelar() {
-        $('#body').append(`
+        function criarMODALCancelar() {
+            $('#body').append(`
     <div id="solicitacao-cancelar" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -205,14 +261,14 @@ FROM
     </div>
     `)
 
-        $('#solicitacao-cancelar').on('hidden.bs.modal', function(e) {
-            $("#solicitacao-cancelar").remove();
-        })
+            $('#solicitacao-cancelar').on('hidden.bs.modal', function(e) {
+                $("#solicitacao-cancelar").remove();
+            })
 
-    }
-    criarMODALCancelar()
+        }
+        criarMODALCancelar()
 
-    $('#solicitacao-cancelar').modal('show')
+        $('#solicitacao-cancelar').modal('show')
     }
     /////modal cancelar/////
     ////cancelar/////
@@ -245,8 +301,8 @@ FROM
     ////Modal aprovar/////
     function modalAprovar(id_solicitacoes) {
 
-    function criarMODALAprovar() {
-        $('#body').append(`
+        function criarMODALAprovar() {
+            $('#body').append(`
     <div id="solicitacao-aprovar" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -269,14 +325,14 @@ FROM
     </div>
     `)
 
-        $('#solicitacao-aprovar').on('hidden.bs.modal', function(e) {
-            $("#solicitacao-aprovar").remove();
-        })
+            $('#solicitacao-aprovar').on('hidden.bs.modal', function(e) {
+                $("#solicitacao-aprovar").remove();
+            })
 
-    }
-    criarMODALAprovar()
+        }
+        criarMODALAprovar()
 
-    $('#solicitacao-aprovar').modal('show')
+        $('#solicitacao-aprovar').modal('show')
     }
     /////modal aprovar/////
     ////aprovar////
@@ -309,8 +365,8 @@ FROM
     ////modal indeferir////
     function modalIndeferir(id_solicitacoes) {
 
-    function criarMODALIndeferir() {
-        $('#body').append(`
+        function criarMODALIndeferir() {
+            $('#body').append(`
     <div id="solicitacao-indeferir" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -333,16 +389,16 @@ FROM
     </div>
     `)
 
-        $('#solicitacao-indeferir').on('hidden.bs.modal', function(e) {
-            $("#solicitacao-indeferir").remove();
-        })
+            $('#solicitacao-indeferir').on('hidden.bs.modal', function(e) {
+                $("#solicitacao-indeferir").remove();
+            })
 
-    }
-    criarMODALIndeferir()
+        }
+        criarMODALIndeferir()
 
-    $('#solicitacao-indeferir').modal('show')
+        $('#solicitacao-indeferir').modal('show')
     }
-     /////modal indeferir/////
+    /////modal indeferir/////
     ////indeferir////
 
 
@@ -368,7 +424,7 @@ FROM
                 }
             },
             error: function() {
-                alertaMensagem('Erro ao excluir, favor contatar o suporte', false)
+                alertaMensagem('Erro ao editar, favor contatar o suporte', false)
             }
         })
     }
@@ -376,38 +432,40 @@ FROM
     <?php
     $queryOptionsEditar = mysqli_query($conexao, "
         SELECT 
-            id_tipo_solicitacao, descricao, situacao
+            id_tipo_solicitacao, descricao
         FROM
-            tipo_solicitacao;
+            tipo_solicitacao
+        where 
+            situacao = 'A';
         ");
     ?>
 
     function modalEditar(id_solicitacoes) {
 
 
-    function buscaEditar(id_solicitacoes) {
-        $.ajax({
-            url: `busca_solicitacao.php`,
-            method: "GET",
-            data: {
-                id_solicitacoes: id_solicitacoes,
-                busca: 'unica'
-            },
-            success: function(dados) {
-                dados = JSON.parse(dados);
+        function buscaEditar(id_solicitacoes) {
+            $.ajax({
+                url: `busca_solicitacao.php`,
+                method: "GET",
+                data: {
+                    id_solicitacoes: id_solicitacoes,
+                    busca: 'unica'
+                },
+                success: function(dados) {
+                    dados = JSON.parse(dados);
 
-                $("#descricao_edit").val(dados[0]["id_tipo_solicitacao"])
-                $("#observacao_edit").val(dados[0]["observacao"])
-                $('#solicitacoes-edit').modal('show')
-            }
-        })
-    }
+                    $("#descricao_edit").val(dados[0]["id_tipo_solicitacao"])
+                    $("#observacao_edit").val(dados[0]["observacao"])
+                    $('#solicitacoes-edit').modal('show')
+                }
+            })
+        }
 
 
 
-    function criarModalEditar() {
+        function criarModalEditar() {
 
-        $('#body').append(`
+            $('#body').append(`
     <div class="modal fade" id="solicitacoes-edit" tabindex="-1" role="dialog" aria-labelledby="editarModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -425,10 +483,8 @@ FROM
                                             <label for="descricao_edit">Tipo de solicitação</label>
                                             <select name="descricao_edit" id="descricao_edit" class="form-control" required>
                                                 <?php
-                                                while($prod = mysqli_fetch_array($queryOptionsEditar)) { ?> 
-                                                <?php if($prod['situacao'] == 'A'){ ?>
-                                                    <option value="<?php echo $prod['id_tipo_solicitacao']?>"><?php echo $prod['descricao']?></option>
-                                                    <?php } ?>
+                                                while ($prod = mysqli_fetch_array($queryOptionsEditar)) { ?> 
+                                                    <option value="<?php echo $prod['id_tipo_solicitacao'] ?>"><?php echo $prod['descricao'] ?></option>
                                                 <?php } ?>
                                             </select>
                                         </div>
@@ -449,14 +505,13 @@ FROM
         </div>
     `)
 
-        $('#solicitacoes-editar').on('hidden.bs.modal', function(e) {
-            $("#solicitacoes-editar").remove();
-        })
+            $('#solicitacoes-editar').on('hidden.bs.modal', function(e) {
+                $("#solicitacoes-editar").remove();
+            })
 
+        }
+        criarModalEditar()
+
+        buscaEditar(id_solicitacoes);
     }
-    criarModalEditar()
-
-    buscaEditar(id_solicitacoes);
-    }
-
 </script>

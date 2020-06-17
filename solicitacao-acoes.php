@@ -1,16 +1,25 @@
 <?php
 require_once 'conexoes/conexao.php';
 require_once 'conexoes/funcoes.php';
+require_once 'conexoes/login.php';
 
 switch ($_GET['solicitacoes']) {
     case "cancelar":
         cancelarSolicitacao($_GET, $conexao);
         break;
     case "aprovar":
-        aprovarSolicitacao($_GET, $conexao);
+        if(is_admin()){
+            aprovarSolicitacao($_GET, $conexao);
+        } else{
+            echo json_encode(Array("status"=>'erro'));
+        }
         break;
     case "indeferir";
-        indeferirSolicitacao($_GET, $conexao);
+        if(is_admin()){    
+            indeferirSolicitacao($_GET, $conexao);
+        } else{
+            echo json_encode(Array("status"=>'erro'));
+        }
 }
 
 function cancelarSolicitacao($get, $conexao){
@@ -28,6 +37,8 @@ function cancelarSolicitacao($get, $conexao){
     } else{
         echo json_encode(Array("status"=>'sucesso'));
     }
+
+
 }
 
 function aprovarSolicitacao($get, $conexao){

@@ -119,7 +119,7 @@ if (!is_admin()) {
     <script src="tata-master/dist/tata.js"></script>
 
 
-    <br>
+    
     <footer class="container">
         <p>Matheus Riquelme &copy; 2020 Sistema Segunda Igreja Batista</p>
     </footer>

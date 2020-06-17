@@ -65,17 +65,23 @@ function buscaTudo($get, $conexao)
         } elseif ($registro->situacao == 'C') {
             $array['situacao'] = "<span class='badge badge-pill badge-danger' style='height: 19px; width: 90px; font-size: 98%';>Cancelado</span>";
         }
-        if (is_admin()) {
+
+        if (is_admin() and $registro->situacao == 'R') {
             $array['acoes'] = "<i class='material-icons' style='cursor:pointer; color: #d60000' onclick='modalCancelar(" . $registro->id_solicitacoes . ")'>cancel</i>
             <i class='material-icons' style='cursor:pointer; color: #117a8b;' onclick='modalEditar(" . $registro->id_solicitacoes . ")'>edit</i>
+            <i class='material-icons' style='cursor:pointer; color: #007500' onclick='modalAprovar(" . $registro->id_solicitacoes . ")'>check_circle</i>
+            <i class='material-icons' style='cursor:pointer; color: #545b62' cursor:pointer; onclick='modalIndeferir(" . $registro->id_solicitacoes . ")'>delete_forever</i>";
+        } elseif(is_admin() and $registro->situacao == 'D' || $registro->situacao == 'C' ||  $registro->situacao == 'I'){
+            $array['acoes'] = "<i class='material-icons' style='cursor:pointer; color: #d60000' onclick='modalCancelar(" . $registro->id_solicitacoes . ")'>cancel</i>
             <i class='material-icons' style='cursor:pointer; color: #007500' onclick='modalAprovar(" . $registro->id_solicitacoes . ")'>check_circle</i>
             <i class='material-icons' style='cursor:pointer; color: #545b62' cursor:pointer; onclick='modalIndeferir(" . $registro->id_solicitacoes . ")'>delete_forever</i>";
         } elseif ($registro->situacao == 'R') {
             $array['acoes'] = "<i class='material-icons' style='cursor:pointer ;color: #d60000' onclick='modalCancelar(" . $registro->id_solicitacoes . ")'>cancel</i>
             <i class='material-icons' style='cursor:pointer; color: #117a8b;' onclick='modalEditar(" . $registro->id_solicitacoes . ")'>edit</i>";
-            // } elseif($registro->situacao == 'D'){
-            //     $array['acoes'] = "<i class='material-icons' style='color: #d60000' onclick='modalCancelar(" . $registro->id_solicitacoes . ")'>cancel</i>";
-        } else {
+        //     } elseif($registro->situacao == 'D'){
+        //         $array['acoes'] = "<i class='material-icons' style='color: #d60000' onclick='modalCancelar(" . $registro->id_solicitacoes . ")'>cancel</i>";
+        // } 
+        }else {
             $array['acoes'] = 'Não há ações';
         }
 
