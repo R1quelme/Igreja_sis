@@ -17,7 +17,7 @@
 <br />
 
 ### Crud do usuário
-![Screenshot](https://github.com/R1quelme/Igreja_sis/blob/master/prints/CapturaUser.PNG)
+![Screenshot](https://github.com/R1quelme/Igreja_sis/blob/master/prints/CapturaUseer.PNG)
 
 ### Um dos modais
 ![Screenshot](https://github.com/R1quelme/Igreja_sis/blob/master/prints/CapturaModal.PNG)
