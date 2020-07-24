@@ -26,7 +26,7 @@
 ![Screenshot](https://github.com/R1quelme/Igreja_sis/blob/master/prints/CapturaSucces.PNG)
 
 ### Editar dados
-![Screenshot](https://github.com/R1quelme/Igreja_sis/blob/master/prints/CapturaUser.PNG)
+![Screenshot](https://github.com/R1quelme/Igreja_sis/blob/master/prints/CapturaDados.PNG)
 
 ![Screenshot](https://github.com/R1quelme/Igreja_sis/blob/master/prints/CapturaSenha.PNG)
 
