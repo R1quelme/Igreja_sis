@@ -115,9 +115,9 @@ if (!is_admin()) {
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
-    <!-- PAra fazer a mascar esses dois links -->
+    <!-- Mensagens de sucesso ou erro  -->
     <script src="tata-master/dist/tata.js"></script>
-
+    <!-- ----------------------------- -->
 
     
     <footer class="container">
@@ -127,6 +127,10 @@ if (!is_admin()) {
 
 </html>
 <script>
+
+    // =======================================
+    // -----------------Editar----------------
+    // =======================================
     function editarRegistro(id_usuario) {
         $.ajax({
             url: `cadastros-editar.php`,
@@ -266,7 +270,9 @@ if (!is_admin()) {
     }
 
 
-
+    // =======================================
+    // -----------------Inativar--------------
+    // =======================================  
     function inativar(id_usuario) {
         $.ajax({
             url: `cadastros-excluir.php?id_usuario=${id_usuario}`,
@@ -288,6 +294,10 @@ if (!is_admin()) {
         })
     }
 
+
+    // =======================================
+    // -----------------Excluir---------------
+    // =======================================
     function modalExcluir(id_usuario) {
 
         function criarMODALEXCLUIR() {
@@ -323,7 +333,9 @@ if (!is_admin()) {
         $('#cadastros-excluir').modal('show')
     }
 
-
+    // =======================================
+    // --------Função do link da tata---------
+    // =======================================
     function alertaMensagem(texto, sucesso = true) {
         if (sucesso) {
             tata.success(texto, '')
@@ -331,6 +343,7 @@ if (!is_admin()) {
             tata.error(texto, '')
         }
     }
+
 
     function enviarajax() {
         $.ajax({
@@ -354,9 +367,11 @@ if (!is_admin()) {
         })
 
     }
-
     enviarajax()
 
+    // =======================================
+    // ---Modal e funcao de salvar cadastro---
+    // =======================================
     function abrirModalNovoCadastro() {
         $('#editarModal').modal('show')
     };

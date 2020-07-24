@@ -1,0 +1,25 @@
+{
+  "name": "Igreja_sis",
+  "version": "1.0.0",
+  "description": "Projeto criado devido as necessidades geradas pelo COVID-19",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/R1quelme/Igreja_sis.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/R1quelme/Igreja_sis/issues"
+  },
+  "homepage": "https://github.com/R1quelme/Igreja_sis#readme",
+  "devDependencies": {
+    "bootstrap": "^4.5.0",
+    "jquery": "^3.5.1",
+    "select2": "^4.0.13"
+  }
+}
