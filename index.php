@@ -147,13 +147,13 @@ where situacao = 'A';
                 if (dados.status == "sucesso") {
                     enviarajax()
                     $('#modalSolicitacao').modal('hide')
-                    alertaMensagem('Cadastro realizado com sucesso')
+                    alertaMensagem('Solictação realizado com sucesso')
                 } else {
-                    alertaMensagem('Erro ao cadastrar, ', false)
+                    alertaMensagem('Erro ao fazer solitação, ', false)
                 }
             },
             error: function() {
-                alertaMensagem('Erro ao cadastrar, favor contatar o suporte', false)
+                alertaMensagem('Erro ao fazer solitaçãor, favor contatar o suporte', false)
             }
         })
     }
