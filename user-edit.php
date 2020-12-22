@@ -79,8 +79,6 @@ $row_usuario = mysqli_fetch_assoc($resultado_usuario);
 </html>
 
 <script> 
-
-
     function alertaMensagem(texto, sucesso = true) {
         if (sucesso) {
             tata.success(texto, '')

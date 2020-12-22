@@ -27,7 +27,7 @@ FROM
 <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-<body>
+<body id="body">
     <div class="table responsive">
         <div class="container">
             <br>
@@ -38,7 +38,7 @@ FROM
                         <div class="col">
                             <label for="select2_nome"><b>Nome:</b></label>
                         </div>
-                        <select style="width:400px;" data-placeholder="  Selecione quais campos deseja no seu relátorio" name="select2_nome" id="select2_nome" multiple>
+                        <select style="width:400px;" data-placeholder="Selecione quais campos deseja no seu relátorio" name="select2_nome" id="select2_nome" multiple>
                             <?php
                             while ($prod = mysqli_fetch_array($queryOptionsCadastro)) { ?>
                                 <option value="<?php echo $prod['id_usuario'] ?>"><?php echo $prod['nome'] ?></option>
@@ -50,7 +50,7 @@ FROM
                         <div class="col">
                             <br><label for="select2_situacao"><b>Situação:</b></label>
                         </div>
-                        <select style="width:400px;" data-placeholder="  Selecione quais campos deseja no seu relátorio" name="select2_situacao" id="select2_situacao" multiple>
+                        <select style="width:400px;" data-placeholder="Selecione quais campos deseja no seu relátorio" name="select2_situacao" id="select2_situacao" multiple>
                             <option value="R">Requerido</option>
                             <option value="D">Deferido</option>
                             <option value="I">Indeferido</option>
@@ -62,7 +62,7 @@ FROM
                         <div class="col">
                             <br><label for="select2_tipo_solicitacao"><b>Tipo de Solicitacao:</b></label>
                         </div>
-                        <select style="width:400px;" data-placeholder="  Selecione quais campos deseja no seu relátorio" name="select2_tipo_solicitacao" id="select2_tipo_solicitacao" multiple>
+                        <select style="width:400px;" data-placeholder="Selecione quais campos deseja no seu relátorio" name="select2_tipo_solicitacao" id="select2_tipo_solicitacao" multiple>
                             <?php
                             mysqli_data_seek($queryOptionsTipoSolicitacao, 0);
                             while ($prod = mysqli_fetch_array($queryOptionsTipoSolicitacao)) { ?>
@@ -75,7 +75,7 @@ FROM
                         <div class="col">
                             <br><label for="select2_mes"><b>Mês:</b></label>
                         </div>
-                        <select style="width:400px;" data-placeholder="  Selecione quais campos deseja no seu relátorio" name="select2_mes" id="select2_mes" multiple>
+                        <select style="width:400px;" data-placeholder="Selecione quais campos deseja no seu relátorio" name="select2_mes" id="select2_mes" multiple>
                             <option value="1">Janeiro</option>
                             <option value="2">Feveiro</option>
                             <option value="3">Março</option>
@@ -90,21 +90,20 @@ FROM
                             <option value="12">Dezembro</option>
                         </select>
                     </div>
-                </form>
-            </div>
-            <button type="button" class="btn btn-success" onclick="return enviarajax()">Filtrar</button>
-            <button type="reset" class="btn btn-light">Limpar</button>
+            </form>
+        </div>
+        <button type="button" class="btn btn-success" onclick="return enviarajax()">Filtrar</button>
+        <button type="reset" class="btn btn-light">Limpar</button>
 
         <br><br><br>
         <div class="float-left">
             <h2 id="solicitacao">Relatorio</h2>
         </div>
-
         <form>
             <table id="tabela_sib" data-search="true" data-icons="icons" data-search="true" data-pagination="true" data-page-list="[10, 25, 50, 100, all]" data-show-fullscreen="true" data-show-columns="true" data-show-export="true">
                 <thead>
                     <tr>
-                        <th scope="col" data-field="nome" data-sortable="true">Nome</th>
+                        <th scope="col" data-field="nome">Nome</th>
                         <th scope="col" data-field="endereco">Endereço</th>
                         <th scope="col" data-field="solicitacao">Tipo de solicitação</th>
                         <th scope="col" data-field="observacao">Observação</th>
@@ -115,11 +114,11 @@ FROM
             </table>
         </form>
     </div>
-    </div>
 
     <div class="container">
         <div align="right">
             <i onClick="window.print()" class='material-icons' style='cursor:pointer;'>print</i>
+            <a onclick="gerarPDF()" target="_blank" class='material-icons' style='cursor:pointer;'>arrow_circle_down</a>
         </div>
         <br>
         <hr>
@@ -142,7 +141,6 @@ FROM
                 select2_mes: $("#select2_mes").val()
             },
             success: function(result) {
-
                 $('#tabela_sib').bootstrapTable('destroy')
                 $('#tabela_sib').bootstrapTable({
                     data: JSON.parse(result)
@@ -167,4 +165,29 @@ FROM
         $('#select2_tipo_solicitacao').select2();
         $('#select2_mes').select2();
     })
+
+    function gerarPDF() {
+        let arrayDivida = $('#tabela_sib').bootstrapTable('getData')
+        let arrayComJson = JSON.stringify(arrayDivida)
+
+        $.ajax({
+            url: "mpdf.php",
+            method: "POST",
+            dataType:"json",
+            data: {
+                table: arrayComJson
+            },
+            success: function(dados) {
+                window.open(dados.url)
+                // window.location.href = 'DowloadsMPDF/relatorio de solicitacoes_4ae2ca657fbf09d2e557271f9f12b83b.pdf';
+            }
+        })
+    }
+
+    // nome: 'nome', 
+    // endereco: arrayPDF['endereco'],
+    // tipo_solicitacao: arrayPDF['solicitacao'],
+    // observacao: arrayPDF['observacao'],
+    // criado: arrayPDF['criado'],
+    // situacao: arrayPDF['situacao']
 </script>

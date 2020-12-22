@@ -1,3 +1,10 @@
+
+
+
+
+
+
+
 <?php
 require_once 'conexoes/conexao.php';
 require_once 'conexoes/funcoes.php';
@@ -36,7 +43,7 @@ function buscaTudo($get, $conexao)
         JOIN 
         solicitacoes AS s on s.id_usuario = c.id_usuario
         JOIN
-        tipo_solicitacao AS t ON t.id_tipo_solicitacao= s.id_tipo_solicitacao
+        tipo_solicitacao AS t ON t.id_tipo_solicitacao = s.id_tipo_solicitacao
     ";
 
     if (!is_admin()) {
@@ -82,10 +89,9 @@ function buscaTudo($get, $conexao)
         } elseif ($registro->situacao == 'R') {
             $array['acoes'] = "<i class='material-icons' style='cursor:pointer ;color: #d60000' onclick='modalCancelar(" . $registro->id_solicitacoes . ")'>cancel</i>
             <i class='material-icons' style='cursor:pointer; color: #117a8b;' onclick='modalEditar(" . $registro->id_solicitacoes . ")'>edit</i>";
-        //     } elseif($registro->situacao == 'D'){
-        //         $array['acoes'] = "<i class='material-icons' style='color: #d60000' onclick='modalCancelar(" . $registro->id_solicitacoes . ")'>cancel</i>";
-        // } 
-        }else {
+        } elseif($registro->situacao == 'C'){   
+            $array['acoes'] = "<i class='material-icons' style='cursor:pointer; color: black' onclick='modalReverter(" . $registro->id_solicitacoes . ")'>autorenew</i>";
+        } else {
             $array['acoes'] = 'Não há ações';
         }
 
@@ -122,13 +128,6 @@ function filtrar($get, $conexao){
         JOIN
         tipo_solicitacao AS t ON t.id_tipo_solicitacao= s.id_tipo_solicitacao
     ";
-
-    // $q = "
-    // SELECT 
-    //     created,MONTH(created) as 'mes'
-    // FROM 
-    //     solicitacoes 
-    // ";
 
     if($select2_nome != null){
         $valores = '';
@@ -180,7 +179,6 @@ function filtrar($get, $conexao){
     }
 
     $resultados = $conexao->query($q);  
-    // echo $q;
 
     $arraypararetorno = [];
 
@@ -233,7 +231,7 @@ function buscaUnica($get, $conexao)
     ";
     //o where é para uma questão de segurança, para nao deixar que a pessoa consiga ir nos dados de editar de outra pessoa(vendo o nome da função) atraves d o id! 
 
-    if (!is_admin()) {
+    if (!is_admin()){
         $q .= " and c.id_usuario = " . $_SESSION['id_usuario_igreja'];
     }
     $resultados = $conexao->query($q);

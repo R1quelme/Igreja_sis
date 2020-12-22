@@ -20,6 +20,9 @@ switch ($_GET['solicitacoes']) {
         } else{
             echo json_encode(Array("status"=>'erro'));
         }
+        break;
+    case "reverter":
+        reverterSolicitacao($_GET, $conexao);
 }
 
 function cancelarSolicitacao($get, $conexao){
@@ -37,8 +40,6 @@ function cancelarSolicitacao($get, $conexao){
     } else{
         echo json_encode(Array("status"=>'sucesso'));
     }
-
-
 }
 
 function aprovarSolicitacao($get, $conexao){
@@ -74,3 +75,20 @@ function indeferirSolicitacao($get, $conexao){
         echo json_encode(Array("status"=>'sucesso'));
     }
 }
+
+function reverterSolicitacao($get, $conexao){
+    $idsolicitacoes = filter_input(INPUT_GET, 'id_solicitacoes');
+    $query = "UPDATE `solicitacoes`
+    SET 
+        `situacao` = 'R'
+    WHERE 
+        `id_solicitacoes` = $idsolicitacoes";
+    
+    $exec = mysqli_query($conexao, $query);
+
+    if($exec == false){
+        echo json_encode(Array("status"=>'erro'));
+    } else{
+        echo json_encode(Array("status"=>'sucesso'));
+    }
+};

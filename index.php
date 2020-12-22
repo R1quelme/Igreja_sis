@@ -23,7 +23,6 @@ where situacao = 'A';
         <div class="container">
             <br>
             <h2>Solicitações</h2>
-
             <div class="float-left" style="margin-top: 10px;color: #fff !important;">
                 <p><a id="solicitacao" onclick="abrirModalSolicitacao()" class="btn btn-info">Fazer solicitação</a></p>
             </div>
@@ -160,7 +159,65 @@ where situacao = 'A';
     ///modal e onde manda a requisição do salvar///
 
 
-    ////cancelar//////
+    function reverter(id_solicitacoes){
+        $.ajax({
+            url: `solicitacao-acoes.php?id_solicitacoes=${id_solicitacoes}`,
+            method: "GET",
+            data: {
+                solicitacoes: 'reverter'
+            },
+            success: function(dados){
+                dados = JSON.parse(dados)
+                if(dados.status == "sucesso"){  
+                    enviarajax()
+                    $('#solicitacao-reverter').modal('hide')
+                    alertaMensagem('Solicitacao retornada para requerida novamento com sucesso')
+                } else{
+                    $('#solicitacao-reverter').modal('hide')
+                    alertaMensagem('Erro ao retornar solicitacao para requerida novamente, favor contatar o suporte')
+                }
+            },
+            error: function(){
+                alertaMensagem('Erro ao retornar solicitacao para requerida novamente, favor contatar o suporte')
+            }
+        })
+    }
+
+    function modalReverter(id_solicitacoes){
+        function criarModalReverter(){
+           $('#body').append(`
+            <div id="solicitacao-reverter" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form>
+                            <div class="modal-header">
+                                <h4 class="modal-title">Reverter solicitação</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Voce tem certeza que deseja desfazer a sua ação e reverte-la para requerida novamente?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="button" class="btn btn-default" data-dismiss="modal" value="Fechar">
+                                <input type="button" class="btn btn-success" value="Reverter" onclick='reverter(${id_solicitacoes})'>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+           `)
+           
+           $('#solicitacao-reverter').on('hidden.bs.modal', function(e) {
+                $("#solicitacao-reverter").remove();
+            })
+        }
+
+        criarModalReverter()
+
+        $('#solicitacao-reverter').modal('show')
+    }
+
+
     function cancelar(id_solicitacoes) {
         $.ajax({
             url: `solicitacao-acoes.php?id_solicitacoes=${id_solicitacoes}`,
@@ -185,32 +242,31 @@ where situacao = 'A';
         })
     }
 
-    ////Modal cancelar/////
+
     function modalCancelar(id_solicitacoes) {
 
         function criarMODALCancelar() {
             $('#body').append(`
-    <div id="solicitacao-cancelar" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form>
-                    <div class="modal-header">
-                        <h4 class="modal-title">Cancelar solicitação</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <div id="solicitacao-cancelar" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form>
+                            <div class="modal-header">
+                                <h4 class="modal-title">Cancelar solicitação</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Voce tem certeza que deseja cancelar a sua solicitação?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="button" class="btn btn-default" data-dismiss="modal" value="Fechar">
+                                <input type="button" class="btn btn-danger" value="Cancelar" onclick='cancelar(${id_solicitacoes})'>
+                            </div>
+                        </form>
                     </div>
-                    <div class="modal-body">
-                        <p>Voce tem certeza que deseja cancelar a sua solicitação?</p>
-                        <p class="text-danger"><small>Está ação nao pode ser desfeita.</small></p>
-                    </div>
-                    <div class="modal-footer">
-                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Fechar">
-                        <input type="button" class="btn btn-danger" value="Cancelar" onclick='cancelar(${id_solicitacoes})'>
-                    </div>
-                </form>
+                </div>
             </div>
-        </div>
-    </div>
-    `)
+            `)
 
             $('#solicitacao-cancelar').on('hidden.bs.modal', function(e) {
                 $("#solicitacao-cancelar").remove();
@@ -221,10 +277,7 @@ where situacao = 'A';
 
         $('#solicitacao-cancelar').modal('show')
     }
-    /////modal cancelar/////
-    ////cancelar/////
 
-    ////aprovar/////
     function aprovar(id_solicitacoes) {
         $.ajax({
             url: `solicitacao-acoes.php?id_solicitacoes=${id_solicitacoes}`,
@@ -249,32 +302,32 @@ where situacao = 'A';
         })
     }
 
-    ////Modal aprovar/////
+
     function modalAprovar(id_solicitacoes) {
 
         function criarMODALAprovar() {
             $('#body').append(`
-    <div id="solicitacao-aprovar" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form>
-                    <div class="modal-header">
-                        <h4 class="modal-title">Aprovar solicitação</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <div id="solicitacao-aprovar" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form>
+                            <div class="modal-header">
+                                <h4 class="modal-title">Aprovar solicitação</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Tem certeza que deseja aprovar essa solicitação?</p>
+                                <p class="text-danger"><small>Está ação nao pode ser desfeita.</small></p>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="button" class="btn btn-default" data-dismiss="modal" value="Fechar">
+                                <input type="button" class="btn btn-success" value="Aprovar" onclick='aprovar(${id_solicitacoes})'>
+                            </div>
+                        </form>
                     </div>
-                    <div class="modal-body">
-                        <p>Tem certeza que deseja aprovar essa solicitação?</p>
-                        <p class="text-danger"><small>Está ação nao pode ser desfeita.</small></p>
-                    </div>
-                    <div class="modal-footer">
-                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Fechar">
-                        <input type="button" class="btn btn-success" value="Aprovar" onclick='aprovar(${id_solicitacoes})'>
-                    </div>
-                </form>
+                </div>
             </div>
-        </div>
-    </div>
-    `)
+            `)
 
             $('#solicitacao-aprovar').on('hidden.bs.modal', function(e) {
                 $("#solicitacao-aprovar").remove();
@@ -285,10 +338,8 @@ where situacao = 'A';
 
         $('#solicitacao-aprovar').modal('show')
     }
-    /////modal aprovar/////
-    ////aprovar////
-
-    ////indeferir////
+    
+    
     function indeferir(id_solicitacoes) {
         $.ajax({
             url: `solicitacao-acoes.php?id_solicitacoes=${id_solicitacoes}`,
@@ -313,32 +364,32 @@ where situacao = 'A';
         })
     }
 
-    ////modal indeferir////
+
     function modalIndeferir(id_solicitacoes) {
 
         function criarMODALIndeferir() {
             $('#body').append(`
-    <div id="solicitacao-indeferir" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form>
-                    <div class="modal-header">
-                        <h4 class="modal-title">Indeferir solicitação</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <div id="solicitacao-indeferir" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form>
+                            <div class="modal-header">
+                                <h4 class="modal-title">Indeferir solicitação</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Tem certeza que deseja indeferir essa solicitação?</p>
+                                <p class="text-danger"><small>Está ação nao pode ser desfeita.</small></p>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="button" class="btn btn-default" data-dismiss="modal" value="Fechar">
+                                <input type="button" class="btn btn-danger" value="Indeferir" onclick='indeferir(${id_solicitacoes})'>
+                            </div>
+                        </form>
                     </div>
-                    <div class="modal-body">
-                        <p>Tem certeza que deseja indeferir essa solicitação?</p>
-                        <p class="text-danger"><small>Está ação nao pode ser desfeita.</small></p>
-                    </div>
-                    <div class="modal-footer">
-                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Fechar">
-                        <input type="button" class="btn btn-danger" value="Indeferir" onclick='indeferir(${id_solicitacoes})'>
-                    </div>
-                </form>
+                </div>
             </div>
-        </div>
-    </div>
-    `)
+            `)
 
             $('#solicitacao-indeferir').on('hidden.bs.modal', function(e) {
                 $("#solicitacao-indeferir").remove();
@@ -349,11 +400,8 @@ where situacao = 'A';
 
         $('#solicitacao-indeferir').modal('show')
     }
-    /////modal indeferir/////
-    ////indeferir////
 
 
-    ///editar/////
     function editarRegistro(id_solicitacoes) {
         $.ajax({
             url: `solicitacao_editar.php`,
@@ -417,44 +465,44 @@ where situacao = 'A';
         function criarModalEditar(){
 
             $('#body').append(`
-    <div class="modal fade" id="solicitacoes-edit" tabindex="-1" role="dialog" aria-labelledby="editarModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="editarModalLabel">Editar cadastro</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <form id="form_editar">
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-12">
-                                        <div class="form-group">
-                                            <label for="descricao_edit">Tipo de solicitação</label>
-                                            <select name="descricao_edit" id="descricao_edit" class="form-control" required>
-                                                <?php
-                                                while ($prod = mysqli_fetch_array($queryOptionsEditar)) { ?> 
-                                                    <option value="<?php echo $prod['id_tipo_solicitacao'] ?>"><?php echo $prod['descricao'] ?></option>
-                                                <?php } ?>
-                                            </select>
+            <div class="modal fade" id="solicitacoes-edit" tabindex="-1" role="dialog" aria-labelledby="editarModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editarModalLabel">Editar cadastro</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form id="form_editar">
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                                <div class="form-group">
+                                                    <label for="descricao_edit">Tipo de solicitação</label>
+                                                    <select name="descricao_edit" id="descricao_edit" class="form-control" required>
+                                                        <?php
+                                                        while ($prod = mysqli_fetch_array($queryOptionsEditar)) { ?> 
+                                                            <option value="<?php echo $prod['id_tipo_solicitacao'] ?>"><?php echo $prod['descricao'] ?></option>
+                                                        <?php } ?>
+                                                    </select>
+                                                </div>
+                                            <div class="form-group">
+                                                <label for="observacao_edit">Observação</label>
+                                                <textarea type="text" name="observacao_edit" id="observacao_edit" class="form-control" required></textarea>
+                                            </div>
                                         </div>
-                                    <div class="form-group">
-                                        <label for="observacao_edit">Observação</label>
-                                        <textarea type="text" name="observacao_edit" id="observacao_edit" class="form-control" required></textarea>
                                     </div>
                                 </div>
-                            </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                                    <button type="button" class="btn btn-success" value="Editar" onclick='editarRegistro(${id_solicitacoes})'>Salvar</button>
+                                </div>
+                            </form>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                            <button type="button" class="btn btn-success" value="Editar" onclick='editarRegistro(${id_solicitacoes})'>Salvar</button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
-            </div>
-        </div>
-    `)
+            `)
 
             $('#solicitacoes-editar').on('hidden.bs.modal', function(e) {
                 $("#solicitacoes-editar").remove();

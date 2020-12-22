@@ -1,0 +1,121 @@
+.cabecalho{
+	width: 100%;
+	float: left;
+	padding: 0.2% 1%;
+}
+
+.logo{
+	width: 76px; height: 76px; float: left;
+}
+
+.linha{
+  text-align: right;
+}
+
+fieldset.body{
+	border:none;
+	/** "colocar entre image e a url" linear-gradient(to bottom, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.35) 0%),*/
+	background-image: linear-gradient(rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.35) 0%), url("logo_batista.jpg");
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+.header{
+	text-align: center;
+}
+
+.grifar{
+	background: rgb(230, 230, 230);
+	padding: 10px;
+	margin: 0;
+	text-align: center;
+}
+
+
+div.boxleft {
+	width: 400px;
+	display: inline-block;
+	text-align: left;
+}
+
+div.box {
+	display: inline-block;
+	text-align: right;
+}
+
+td.tdHeader{
+	padding: 15px;
+}
+
+p {
+	margin: 0;
+}
+ 
+h2{
+	font-size: 27px;
+	margin: 0;
+	text-align: center;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+footer{
+	width: 100%;
+	bottom: 0;
+	left: 0;
+	padding: -5% -1%;
+}
+
+.table_export {
+	border-top: solid 1px #000000;
+	border-bottom: solid 1px #000000;
+}
+
+.table_export tbody tr td {
+	text-align: left;
+	font-weight: lighter;
+	font-size: 13px;
+	/* border-bottom: none; */
+	border-bottom: dashed 0.01cm #dadada;
+	border-left: none;
+	border-right: none;
+	/text-transform: uppercase;/
+	vertical-align: top;
+}
+
+.table_export thead tr th {
+	text-align: left;
+	font-weight: bold;
+	font-size: 13px;
+	border-bottom: none;
+	border-left: none;
+	border-right: none;
+	text-transform: uppercase;
+	vertical-align: bottom;
+}
+
+.table_export tfoot tr td {
+	font-size: 13px !important;
+	font-weight: bold !important;
+	background-color: #f3f3f396 !important;
+	border-bottom: none;
+	border-top: solid 0.01cm #000000;
+}
+
+td.situacaoRequerido{
+    color:#28a745;
+}
+
+td.situacaoDeferido{
+	color: #17a2b8;
+}
+td.situacaoIndeferidoCancelado{
+	color: #dc3545;
+}
+
+
+
+
+
+

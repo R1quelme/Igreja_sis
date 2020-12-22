@@ -5,6 +5,12 @@ if (!is_admin()) {
     header("location: user-login.php");
     die;
 }
+
+function goals (int $laLigaGoals, int $copaDelReyGoals, int $championsLeagueGoals){
+    // code goes here
+    $resultado = $laLigaGoals + $copaDelReyGoals + $championsLeagueGoals;
+    echo $laLigaGoals ?> , <?php $copaDelReyGoals ?>, <?php $championsLeagueGoals ?> --> <?php $resultado;
+  }
 ?>
 
 <body id="body">
@@ -362,10 +368,8 @@ if (!is_admin()) {
                     <p><a id="novoCadastro" onclick="abrirModalNovoCadastro()" class="btn btn-info">Criar cadastro</a></p>
                     </div>
                     `)
-
             }
         })
-
     }
     enviarajax()
 

@@ -13,7 +13,6 @@ function formulario($msg, $usuario = "")
 {
     echo  '<br><form action="user-login.php" method="post">
     <div class="container">
-    <div class="corpo">
         <div class="row">
             <div class="col-md-3 col-md-offset-0">
                 <div class="form-group">
@@ -24,13 +23,14 @@ function formulario($msg, $usuario = "")
                     <label><b>Senha</b></label>
                     <input type="password" name="senha" id="senha" class="form-control">
                     <a href="" data-toggle="modal" data-target="#criarCadastro">Criar novo cadastro</a>
+                    |
+                    <a href="recuperasenha.php">Esqueci minha senha</a>
                 </div>
                 ' . $msg . '
                 <input type="submit" class="btn btn-success btn-block" value="Entrar">
             </div>
         </div>
     </div>
-</div>
 </form>';
 }
 ?>
@@ -54,7 +54,7 @@ function formulario($msg, $usuario = "")
                     echo "Falha ao acessar o banco";
                 } else {
                     if ($busca->num_rows > 0) {
-                        $registro = $busca->fetch_object();
+                        $registro = $busca->fetch_object(); 
                         if ($registro->situacao === "ativo") {
                             if (testarHash($senha, $registro->senha)) {
                                 header("location: index.php");

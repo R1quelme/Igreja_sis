@@ -1,0 +1,32 @@
+<style>
+    table { border-collapse:collapse };
+</style>
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <title>Igreja batista</title>
+        <link href="assets/css/personalizarPDF.css" rel="stylesheet">
+    </head>
+    <body class="body">
+        <header class="cabecalho">
+            <div class="header">
+                <img src="logo_batista.jpg" class="logo">
+                <h2>Segunda Igreja Batista</h2>
+                <p>Rua Acre, 203 - Santa Luzia</p>
+                <p>PASSOS/MG - BRASIL - CEP 164000-503 / Telefone: (00) 00000-0000</p>
+            </div>
+        </header>
+        <div class="grifar">
+            <h2>Relatorio de solicitações</h2><br>
+        </div>
+        <footer id="rodape"><hr>
+            <div class="box"> 
+                <p>Data da impressão: '.$agora->format('d/m/Y H:i').' </p>
+                <p>Emissor: '. $_SESSION['nome_igreja'] .' </p>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    				</div>
+            <div class="box">
+                <p style="color: #696969">&copy; Sistema SIB Desenvolvido por Matheus Riquelme Solutions</p>
+            <div>
+        </footer>
+    </body>
+</html>;
